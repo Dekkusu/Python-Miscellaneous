@@ -54,6 +54,6 @@ def to_csv_detailed(csv_filename, csv_filedata):
 #     "street 3",
 #     "street 4"
 # ]
-# 
+
 # to_csv_summarized("detailed.csv", lane_data, street_name)
 # to_csv_detailed("summarized.csv", vehicle_count_data)
