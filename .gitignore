@@ -25,6 +25,10 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+# temp
+/assets 
+analytics.py 
+# temp
 MANIFEST
 
 # PyInstaller
