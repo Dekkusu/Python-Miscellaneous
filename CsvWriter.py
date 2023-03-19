@@ -1,5 +1,4 @@
 import csv
-import os
 import pandas as pd
 
 def to_csv_leg_data(csv_filename, csv_filedata):
