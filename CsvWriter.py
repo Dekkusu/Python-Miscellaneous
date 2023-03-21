@@ -12,7 +12,6 @@ class_breakdown_filename = time.strftime("%m%d%Y") + "_ClassData.csv"
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-
 def create_empty_lane_csv(csv_filename):
     csv_file = csv_filename
     fieldnames = ["Date", "Time", "Camera 1", "Camera 2",
@@ -37,6 +36,42 @@ def create_empty_lane_csv(csv_filename):
     except Exception as e:
         print(e)
 
+def create_temp_csv(csv_filedata):
+    csv_filename = directory+"temp.csv"
+    list_data_count_keys = list(csv_filedata.keys())
+    list_data_count_values = list(csv_filedata.values())
+    vehicle_count_to_add = []
+    try:
+        reader = pd.read_csv(csv_file)
+        try:
+            # for line_count in range(len(reader.index)):
+            # previous vehicle count data
+            if (reader.loc[0, list_data_count_keys[2:6]] > 0).any():
+                '''Have atleast 1 element/data greater than 0'''
+                reader.loc[1, list_data_count_keys] = list_data_count_values    # new vehicle count data
+                vehicle_count_to_add.extend(np.subtract(
+                    reader.loc[1, list_data_count_keys[2:6]], reader.loc[0, list_data_count_keys[2:6]]))
+                reader.loc[2, list_data_count_keys[2:6]] = vehicle_count_to_add
+                # new value of previous data
+                reader.loc[0, list_data_count_keys[2:6]] = vehicle_count_to_add
+                reader.to_csv(csv_file, index=False)
+                print(f"Added new line {csv_file}")
+            else:
+                '''If whole row is 0 or empty'''
+                # reader.loc[0, list_data_count_keys[2:6]] = vehicle_count_to_add
+                # reader.to_csv(csv_file, index=False)
+                print("zero")
+        except Exception as e:
+            print(e)
+    except:
+        initial_value = [0, hour_now, 0, 0, 0, 0]
+        with open(csv_filename, "w", newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(list_data_count_keys)
+            writer.writerow(list_data_count_values)
+            # writer.writerow(initial_value)
+            writer.writerow(list_data_count_values)
+            writer.writerow(list_data_count_values)
 
 def to_csv_leg_data(csv_filename, csv_filedata):
     csv_file = directory+csv_filename
